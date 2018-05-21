@@ -42,11 +42,11 @@
                 border-radius: 40% 0% 66% 100%;
             }
             /* 耳朵变化 */
-            .face:hover .ear-wrap .left {
+            .face:hover+ .ear-wrap .left {
                 transform: rotate(-34deg);
             }
-            .face:hover .ear-wrap .right {
-                border-radius: rotate(34deg);
+            .face:hover+ .ear-wrap .right {
+                transform: rotate(34deg);
             }
             /* ear */
             .ear-wrap {
@@ -70,7 +70,7 @@
                 border: 2px solid #000;
                 background: #fbf8f1;
                 border-radius: 100% 10% 50% 0% ;
-                transition: transform 0.8s;
+                transition: transform 1.6s;
             }
             .ear-wrap .right {
                 left: auto;
@@ -123,7 +123,7 @@
                 position: absolute;
                 left: 50%;
                 margin-left: -23px;
-                transition: width 0.3s;
+                transition: width 0.8s;
             }
             .eye-bottom {
                 height: 50px;
@@ -133,7 +133,7 @@
                 margin-top: 48px;
                 border-top: 2px solid #46240b;
                 background: #f6f7f2;
-                transition: margin-top 0.8s;
+                transition: margin-top 1.6s;
             }
             .eye-wrap .right {
                 left: auto;
@@ -150,7 +150,7 @@
                 border-radius: 50% 50% 50% 50%;
                 background: #e85a5e;
                 opacity: 0.0;
-                transition: opacity 0.4s;
+                transition: opacity 1.4s;
             }
             /* 鼻子 */
             .nose {
@@ -182,7 +182,7 @@
                 margin-top: -26px;
                 position: absolute;
                 left: 0;
-                transition: border-radius 0.8s;
+                transition: border-radius 1.6s;
             }
             .mouth-wrap .right {
                 border-bottom: 4px solid #000;
