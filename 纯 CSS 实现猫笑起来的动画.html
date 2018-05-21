@@ -21,6 +21,33 @@
                 background: #fbf8f1;
                 overflow: hidden;
             }
+            /* 眼珠变化 */
+            .face:hover .eye-core{
+                width: 42px;
+                margin-left: -21px;
+            }
+            /* 苹果肌变化 */
+            .face:hover .eye-bottom{
+                margin-top: 36px;
+            }
+            /* 腮红变化 */
+            .face:hover .face-red {
+                opacity: 0.6;
+            }
+            /* 嘴变化 */
+            .face:hover .mouth-wrap .left {
+                border-radius: 0% 40% 100% 66%;
+            }
+            .face:hover .mouth-wrap .right {
+                border-radius: 40% 0% 66% 100%;
+            }
+            /* 耳朵变化 */
+            .face:hover .ear-wrap .left {
+                transform: rotate(-34deg);
+            }
+            .face:hover .ear-wrap .right {
+                border-radius: rotate(34deg);
+            }
             /* ear */
             .ear-wrap {
                 position: absolute;
@@ -123,7 +150,7 @@
                 border-radius: 50% 50% 50% 50%;
                 background: #e85a5e;
                 opacity: 0.0;
-                transition: opacity 0.8s;
+                transition: opacity 0.4s;
             }
             /* 鼻子 */
             .nose {
@@ -211,7 +238,7 @@
         </div>
     </div>
 </body>
-<script type="text/javascript">
+<!-- <script type="text/javascript">
 window.onload = function () {
     let face = document.querySelector('.face');
     let eyeDrop = document.getElementsByClassName('eye-core');
@@ -260,5 +287,5 @@ window.onload = function () {
         earRight.style.transform = 'rotate(0deg)';
     }, false);
 };
-</script>
+</script> -->
 </html>
