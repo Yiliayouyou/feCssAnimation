@@ -43,6 +43,7 @@
                 border: 2px solid #000;
                 background: #fbf8f1;
                 border-radius: 100% 10% 50% 0% ;
+                transition: transform 0.8s;
             }
             .ear-wrap .right {
                 left: auto;
@@ -95,6 +96,7 @@
                 position: absolute;
                 left: 50%;
                 margin-left: -23px;
+                transition: width 0.3s;
             }
             .eye-bottom {
                 height: 50px;
@@ -104,6 +106,7 @@
                 margin-top: 48px;
                 border-top: 2px solid #46240b;
                 background: #f6f7f2;
+                transition: margin-top 0.8s;
             }
             .eye-wrap .right {
                 left: auto;
@@ -120,6 +123,7 @@
                 border-radius: 50% 50% 50% 50%;
                 background: #e85a5e;
                 opacity: 0.0;
+                transition: opacity 0.8s;
             }
             /* 鼻子 */
             .nose {
@@ -151,6 +155,7 @@
                 margin-top: -26px;
                 position: absolute;
                 left: 0;
+                transition: border-radius 0.8s;
             }
             .mouth-wrap .right {
                 border-bottom: 4px solid #000;
@@ -164,46 +169,96 @@
             /*鼠标hover样式 写在这里*/
         </style>
     </head>
-    <body>
-        <div class="container">
-            <!-- 脸 -->
-            <div class="face">
-                <!-- 头发 -->
-                <div class="hair">
-                    <div></div>
-                </div>
-                <!-- 眼睛 -->
-                <div class="eye-wrap">
-                    <div class="eye left">
-                        <div class="eye-circle">
-                            <div class="eye-core"></div>
-                        </div>
-                        <div class="eye-bottom"></div>
-                        <div class="face-red"></div>
+<body>
+    <div class="container">
+        <!-- 脸 -->
+        <div class="face">
+            <!-- 头发 -->
+            <div class="hair">
+                <div></div>
+            </div>
+            <!-- 眼睛 -->
+            <div class="eye-wrap">
+                <div class="eye left">
+                    <div class="eye-circle">
+                        <div class="eye-core"></div>
                     </div>
-                    <div class="eye right">
-                        <div class="eye-circle">
-                            <div class="eye-core"></div>
-                        </div>
-                        <div class="eye-bottom"></div>
-                        <div class="face-red"></div>
+                    <div class="eye-bottom"></div>
+                    <div class="face-red"></div>
+                </div>
+                <div class="eye right">
+                    <div class="eye-circle">
+                        <div class="eye-core"></div>
                     </div>
-                </div>
-                <!-- 鼻子 -->
-                <div class="nose">
-                </div>
-                <!-- 嘴巴 -->
-                <div class="mouth-wrap">
-                    <!-- <div class="mouth-top"></div> -->
-                    <div class="mouth left"></div>
-                    <div class="mouth right"></div>
+                    <div class="eye-bottom"></div>
+                    <div class="face-red"></div>
                 </div>
             </div>
-            <!-- 耳朵 -->
-            <div class="ear-wrap">
-                <div class="ear left"> </div>
-                <div class="ear right"> </div>
+            <!-- 鼻子 -->
+            <div class="nose">
+            </div>
+            <!-- 嘴巴 -->
+            <div class="mouth-wrap">
+                <!-- <div class="mouth-top"></div> -->
+                <div class="mouth left"></div>
+                <div class="mouth right"></div>
             </div>
         </div>
-    
-</body></html>
+        <!-- 耳朵 -->
+        <div class="ear-wrap">
+            <div class="ear left"> </div>
+            <div class="ear right"> </div>
+        </div>
+    </div>
+</body>
+<script type="text/javascript">
+window.onload = function () {
+    let face = document.querySelector('.face');
+    let eyeDrop = document.getElementsByClassName('eye-core');
+    let eyeBottom = document.getElementsByClassName('eye-bottom');
+    let mouthLeft = document.querySelector('.mouth-wrap').querySelector('.left');
+    let mouthRight = document.querySelector('.mouth-wrap').querySelector('.right');
+
+    let faceRed = document.getElementsByClassName('face-red');
+    let earLeft = document.querySelector('.ear-wrap').querySelector('.left');
+    let earRight = document.querySelector('.ear-wrap').querySelector('.right');
+
+    face.addEventListener('mouseover', function (e) {
+        for (let i = 0; i < 2; i++) {
+            // 眼珠
+            eyeDrop[i].style.width = '42px';
+            eyeDrop[i].style.marginLeft = '-21px';
+
+            // 苹果肌
+            eyeBottom[i].style.marginTop = '33px';
+            // 腮红
+            faceRed[i].style.opacity = 0.6;
+        }
+        // 嘴巴
+        mouthLeft.style.borderRadius = '0% 40% 100% 66%';
+        mouthRight.style.borderRadius = '40% 0% 66% 100%';
+
+        earLeft.style.transform = 'rotate(-34deg)';
+        earRight.style.transform = 'rotate(34deg)';
+
+    }, false);
+
+    face.addEventListener('mouseout', function (e) {
+        for (let i = 0; i < 2; i++) {
+            eyeDrop[i].style.width = '46px';
+            eyeDrop[i].style.marginLeft = '-23px';
+
+            eyeBottom[i].style.marginTop = '48px';
+            faceRed[i].style.opacity = 0;
+        }
+
+        // 嘴巴
+        mouthLeft.style.borderRadius = '0% 40% 50% 20%';
+        mouthRight.style.borderRadius = '40% 0% 20% 50%';
+
+        earLeft.style.transform = 'rotate(0deg)';
+        earRight.style.transform = 'rotate(0deg)';
+    }, false);
+};
+</script>
+</html>
