@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>菜单动效</title>
+    <style>
+        .main {
+            margin: auto;
+            text-align: center;
+        }
+        .menu {
+            text-align: center;
+            font-weight: bolder;
+            font-size: 18px;
+            padding: 4px 6px;
+        }
+        .menu-border {
+            width: 0px;
+            height: 3px;
+            background: #53ab57;
+            margin: auto;
+            transition: width 0.8s;
+            -moz-transition: width 0.8s;
+            -webkit-transition: width 0.8s;
+            -o-transition: width 0.8s;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="main">
+        <div class="menu">菜单动效</div>
+        <div class="menu-border"></div>
+        <button class="button">显示动效</button>
+    </div>
+</body>
+
+<script type="text/javascript">
+window.onload = function () {
+    let button = document.querySelector('.button');
+
+    let border = document.querySelector('.menu-border');
+    let menu = document.querySelector('.menu');
+    button.addEventListener('click', function (e) {
+        if (border.style.width === '0px' || border.style.width === '') {
+            border.style.width = '80px';
+            menu.style.color = '#53ab57';
+        } else {
+            border.style.width = '0px';
+            menu.style.color = '#000000';
+        }
+    }, false);
+};
+</script>
+</html>
