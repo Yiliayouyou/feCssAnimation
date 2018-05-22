@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>翻转图片</title>
+    <style>
+        .main {
+            margin: auto;
+            perspective: 1900px; /* 划重点 */
+        }
+        .card {
+            width: 250px;
+            height: 350px;
+            position: absolute;
+            left: 50%;
+            margin-left: -125px;
+            margin-top: 30px;
+            backface-visibility: hidden; /* 划重点 */
+            cursor: pointer; /* 划重点 */
+        }
+        .front {
+            transition: all 0.8s;
+        }
+        .back {
+            transform: rotateY(-180deg);
+            transition: all 0.8s;
+            opacity: 0;
+        }
+        .front:hover {
+            transform: rotateY(180deg);
+        }
+        .front:hover~ .back {
+            transform: rotateY(0deg);
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="main">
+        <div class="card front">
+            <img src="./images/正面.jpg" alt="正面">
+        </div>
+        <div class="card back">
+            <img src="./images/反面.jpg" alt="反面">
+        </div>
+    </div>
+</body>
+</html>
