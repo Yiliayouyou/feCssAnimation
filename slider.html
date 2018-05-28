@@ -24,13 +24,14 @@
 
     .touch-container, .thumb-container {
         width: 100%;
-        height: 200px;
+        height: 242px;
         position: absolute;
         bottom: 0;
     }
     .thumb-container {
         display: flex;
-        bottom: -200px;
+        align-items: center;
+        bottom: -242px;
         transition: all 0.8s;
     }
     .thumb-container .thumb-item {
@@ -46,6 +47,12 @@
     .thumb-container .thumb-item img {
         width: 100%;
     }
+    .thumb-item .thumb-block {
+        position: relative;
+    }
+    .thumb-block:hover .masker {
+        background-color: rgba(0, 0, 0, 0);
+    }
 
     .touch-container:hover +.thumb-container{
         bottom: 0;
@@ -54,36 +61,57 @@
         bottom: 0;
     }
     .masker {
-        width: calc(25% - 55px);
+        width: 100%;
         height: 100%;
         background-color: rgba(0, 0, 0, 0.3);
         position: absolute;
         top: 0;
+    }
+
+    /* 幻灯片效果 */
+    .first-img {
+        position: absolute;
+        left: -500px;
+        transition: all 0.5s;
+    }
+    .first-thumb:hover ~.first-img{
+        left: 0px;
     }
     </style>
 </head>
 <body>
     <div class="main">
         <div class="show-container">
-            <img src="./images/slider/下载1.jpg" alt="">
+            <img class="first-img" src="./images/slider/下载1.jpg" alt="">
+            <img class="second-img" src="./images/slider/下载2.jpg" alt="">
+            <img class="third-img" src="./images/slider/下载3.jpg" alt="">
+            <img class="forth-img" src="./images/slider/下载4.jpg" alt="">
         </div>
         <div class="touch-container"></div>
         <div class="thumb-container">
-            <div class="thumb-item">
-                <img src="./images/slider/下载1.jpg" alt="">
-                <div class="masker"></div>
+            <div class="thumb-item first-thumb">
+                <div class="thumb-block">
+                    <img src="./images/slider/下载1.jpg" alt="">
+                    <div class="masker"></div>
+                </div>
             </div>
-            <div class="thumb-item">
-                <img src="./images/slider/下载2.jpg" alt="">
-                <div class="masker"></div>
+            <div class="thumb-item second-thumb">
+                <div class="thumb-block">
+                    <img src="./images/slider/下载2.jpg" alt="">
+                    <div class="masker"></div>
+                </div>
             </div>
-            <div class="thumb-item">
-                <img src="./images/slider/下载3.jpg" alt="">
-                <div class="masker"></div>
+            <div class="thumb-item third-thumb">
+                <div class="thumb-block">
+                    <img src="./images/slider/下载3.jpg" alt="">
+                    <div class="masker"></div>
+                </div>
             </div>
-            <div class="thumb-item">
-                <img src="./images/slider/下载4.jpg" alt="">
-                <div class="masker"></div>
+            <div class="thumb-item forth-thumb">
+                <div class="thumb-block">
+                    <img src="./images/slider/下载4.jpg" alt="">
+                    <div class="masker"></div>
+                </div>
             </div>
         </div>
     </div>
