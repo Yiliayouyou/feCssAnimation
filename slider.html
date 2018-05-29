@@ -17,10 +17,6 @@
         position: relative;
         overflow: hidden;
     }
-    .main .show-container, .show-container img {
-        height: 100%;
-        width: 100%;
-    }
 
     .touch-container, .thumb-container {
         width: 100%;
@@ -50,6 +46,15 @@
     .thumb-item .thumb-block {
         position: relative;
     }
+    .thumb-item .show-block {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -100;
+    }
+
     .thumb-block:hover .masker {
         background-color: rgba(0, 0, 0, 0);
     }
@@ -69,24 +74,54 @@
     }
 
     /* 幻灯片效果 */
-    .first-img {
-        position: absolute;
+    .thumb-item .first-img {
         left: -500px;
         transition: all 0.5s;
+        transition-timing-function: ease-out;
     }
-    .first-thumb:hover ~.first-img{
+    .thumb-item .second-img {
+        top: 350px;
+        transition: top 0.5s;
+        transition-timing-function: ease-out;
+        z-index: -101;
+    }
+    .thumb-item .third-img {
+        transform: scale(0.1);
+        transition: transform 1s;
+        transition-timing-function: ease-in;
+        z-index: -102;
+    }
+    .thumb-item .forth-img {
+        transform: scale(0.1) rotate(-360deg);
+        transition: transform 0.7s;
+        transition-timing-function: ease-in-out;
+        z-index: -103;
+    }
+    .first-thumb:hover .show-block{
         left: 0px;
+    }
+    .second-thumb:hover .show-block{
+        z-index: -100;
+        top: 0;
+    }
+    .third-thumb:hover .show-block{
+        z-index: -100;
+        transform: scale(1);
+    }
+    .forth-thumb:hover .show-block{
+        z-index: -100;
+        transform: scale(1) rotate(0deg);
     }
     </style>
 </head>
 <body>
     <div class="main">
-        <div class="show-container">
+        <!-- <div class="show-container">
             <img class="first-img" src="./images/slider/下载1.jpg" alt="">
             <img class="second-img" src="./images/slider/下载2.jpg" alt="">
             <img class="third-img" src="./images/slider/下载3.jpg" alt="">
             <img class="forth-img" src="./images/slider/下载4.jpg" alt="">
-        </div>
+        </div> -->
         <div class="touch-container"></div>
         <div class="thumb-container">
             <div class="thumb-item first-thumb">
@@ -94,11 +129,17 @@
                     <img src="./images/slider/下载1.jpg" alt="">
                     <div class="masker"></div>
                 </div>
+                <div class="show-block first-img">
+                    <img src="./images/slider/下载1.jpg" alt="">
+                </div>
             </div>
             <div class="thumb-item second-thumb">
                 <div class="thumb-block">
                     <img src="./images/slider/下载2.jpg" alt="">
                     <div class="masker"></div>
+                </div>
+                <div class="show-block second-img">
+                    <img src="./images/slider/下载2.jpg" alt="">
                 </div>
             </div>
             <div class="thumb-item third-thumb">
@@ -106,11 +147,17 @@
                     <img src="./images/slider/下载3.jpg" alt="">
                     <div class="masker"></div>
                 </div>
+                <div class="show-block third-img">
+                    <img src="./images/slider/下载3.jpg" alt="">
+                </div>
             </div>
             <div class="thumb-item forth-thumb">
                 <div class="thumb-block">
                     <img src="./images/slider/下载4.jpg" alt="">
                     <div class="masker"></div>
+                </div>
+                <div class="show-block forth-img">
+                    <img src="./images/slider/下载4.jpg" alt="">
                 </div>
             </div>
         </div>
