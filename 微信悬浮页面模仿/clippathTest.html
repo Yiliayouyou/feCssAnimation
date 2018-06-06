@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>test css clip-path</title>
+    <style>
+        .clip-path {
+            transition: 1s cubic-bezier(1, -1, 0, 2);
+            -webkit-clip-path: circle(180px at 217px 150px);
+            clip-path: circle(180px at 217px 150px);
+        }
+        .clip-path:hover {
+            -webkit-clip-path: circle(95px at 217px 150px);
+            clip-path: circle(95px at 217px 150px);
+        }
+    </style>
+</head>
+<body>
+    <div class="main">
+        <img src="./picture.jpg" alt="" class="clip-path">
+    </div>
+</body>
+</html>

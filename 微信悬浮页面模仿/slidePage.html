@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>微信滑动页面悬浮窗模仿</title>
+    <style>
+    html, body {
+        padding: 0;
+        margin: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+    }
+    body {
+        height: 100%;
+        overflow: hidden;
+        position: relative;
+    }
+    .main-page, .new-page {
+        height: 100%;
+        width: 100%;
+    }
+    .new-page {
+        background-color: bisque;
+        position: absolute;
+        transition: 0.8s ease-in-out;
+        left: 100vw;
+        z-index: 10;
+    }
+    .dragable-ball {
+        position: absolute;
+        right: 8px;
+        top: 30vh;
+        background: #a4ef97;
+        border: 4px solid darkgrey;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        opacity: 0;
+        z-index: 110;
+    }
+    .right-bottom-tip {
+        position: absolute;
+        bottom: -160px;
+        right: -160px;
+        width: 160px;
+        height: 160px;
+        border-radius: 100% 0 0 0;
+        background-color: aquamarine;
+        z-index: 100;
+        transition: 0.2s ease-in;
+    }
+    </style>
+</head>
+<body>
+    <!-- 移动到三分之一处  底部出现浮窗引导 若手指移动到浮窗引导内部 显示浮窗 否则不显示 -->
+    <!-- 现实浮窗后 浮窗可拖动 拖动到底部消除浮窗 -->
+    <div class="main-page">
+        <div class="content">
+            <h1>here is main page.</h1>
+            <button class="go-new-page">go new page</button>
+        </div>
+        <div class="right-bottom-tip"></div>
+        <div class="dragable-ball"></div>
+    </div>
+
+    <div class="new-page">
+        <div class="content">
+            <h5>here is new page.</h5>
+            <p>右滑关闭页面</p>
+        </div>
+    </div>
+</body>
+<script type="text/javascript">
+function showNewPage() {
+    let goNewPageButton = document.querySelector('.go-new-page');
+    goNewPageButton.addEventListener('click', function () {
+        let newPage = document.querySelector('.new-page');
+        newPage.style.top = '0vh';
+        newPage.style.left = '0vh';
+    });
+}
+
+function slideNewPage() {
+    let newPage = document.querySelector('.new-page');
+    let clientWidth = window.screen.availWidth;
+    let clientHeight = window.screen.availHeight;
+    let touchStartX = touchStartY = touchEndX = touchEndY = preEndX = preEndY = 0;
+
+    newPage.addEventListener('touchstart', function (e) {
+        touchStartX = preEndX = e.touches[0].clientX;
+        touchStartY = preEndY = e.touches[0].clientY;
+    });
+
+    newPage.addEventListener('touchmove', function (e) {
+        let tempX = tempY = 0;
+        tempX = e.changedTouches[0].clientX;
+        tempY = e.changedTouches[0].clientY;
+
+        let diffx = tempX - preEndX;
+
+        // 随着拖动移动页面
+        let preLeft = parseInt(newPage.style.left);
+        if (Math.abs(diffx) > 10) {
+            let movex = preLeft + Number(diffx);
+            if (movex < 0) {
+                newPage.style.left = '0px';
+            } else {
+                newPage.style.left = `${preLeft + Number(diffx)}px`;
+            }
+        }
+
+        // 拖动超过1/3屏幕，显示浮窗引导 控制浮窗透明度
+        let endPosRatio = preLeft / clientWidth;
+        let bottomTip = document.querySelector('.right-bottom-tip');
+        let dragBall = document.querySelector('.dragable-ball');
+        if (endPosRatio > 0.33 && endPosRatio < 0.66) {
+            let move = 0 - 160 + parseInt(160 * (endPosRatio - 0.33) / 0.33);
+            bottomTip.style.bottom = move + 'px';
+            bottomTip.style.right = move + 'px';
+            dragBall.style.opacity = (endPosRatio - 0.33) / 0.33;
+        } else if (endPosRatio > 0 && endPosRatio <= 0.33 ) {
+            bottomTip.style.bottom = '-160px';
+            bottomTip.style.right = '-160px';
+            dragBall.style.opacity = 0;
+        }
+
+        preEndX = tempX;
+        preEndY = tempY;
+    });
+
+    newPage.addEventListener('touchend', function (e) {
+        // 隐藏tip
+        let bottomTip = document.querySelector('.right-bottom-tip');
+        let dragBall = document.querySelector('.dragable-ball');
+        bottomTip.style.bottom = '-160px';
+        bottomTip.style.right = '-160px';
+
+        touchEndX = e.changedTouches[0].clientX;
+        touchEndY = e.changedTouches[0].clientY;
+
+        // 若松手的位置在引导tip框内，显示浮窗 否则隐藏
+        if (touchEndX < (clientWidth - 160) || touchEndY < (clientHeight - 160)) {
+            dragBall.style.opacity = 0;
+        }
+
+        let diffx = touchEndX - touchStartX;
+
+        if (diffx > 10) {
+            // 横向滑动距离超过10 说明表示要离开页面
+            let endPosRatio = touchEndX / clientWidth;
+            if (endPosRatio > 0.33) {
+                // 超过1/3屏幕 离开新页面
+                newPage.style.left = '100vw';
+            } else {
+                // 弹回当前页面
+                newPage.style.left = '0vw';
+            }
+        }
+    });
+}
+window.onload = function () {
+    showNewPage();
+    slideNewPage();
+};
+</script>
+</html>
