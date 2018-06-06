@@ -74,116 +74,113 @@
     </div>
 </body>
 <script type="text/javascript">
-function showNewPage() {
+window.onload = function () {
+    // 常用变量定义
     let goNewPageButton = document.querySelector('.go-new-page');
-    goNewPageButton.addEventListener('click', function () {
-        let newPage = document.querySelector('.new-page');
-        newPage.style.top = '0vh';
-        newPage.style.left = '0vh';
-    });
-}
-
-function slideNewPage() {
     let newPage = document.querySelector('.new-page');
+    let bottomTip = document.querySelector('.right-bottom-tip');
+    let dragBall = document.querySelector('.dragable-ball');
     let clientWidth = window.screen.availWidth;
     let clientHeight = window.screen.availHeight;
-    let touchStartX = touchStartY = touchEndX = touchEndY = preEndX = preEndY = 0;
 
-    newPage.addEventListener('touchstart', function (e) {
-        touchStartX = preEndX = e.touches[0].clientX;
-        touchStartY = preEndY = e.touches[0].clientY;
-    });
-
-    newPage.addEventListener('touchmove', function (e) {
-        let tempX = tempY = 0;
-        tempX = e.changedTouches[0].clientX;
-        tempY = e.changedTouches[0].clientY;
-
-        let diffx = tempX - preEndX;
-
-        // 随着拖动移动页面
-        let preLeft = parseInt(newPage.style.left);
-        if (Math.abs(diffx) > 10) {
-            let movex = preLeft + Number(diffx);
-            if (movex < 0) {
-                newPage.style.left = '0px';
-            } else {
-                newPage.style.left = `${preLeft + Number(diffx)}px`;
-            }
-        }
-
-        // 拖动超过1/3屏幕，显示浮窗引导 控制浮窗透明度
-        let endPosRatio = preLeft / clientWidth;
-        let bottomTip = document.querySelector('.right-bottom-tip');
-        let dragBall = document.querySelector('.dragable-ball');
-        if (endPosRatio > 0.33 && endPosRatio < 0.66) {
-            let move = 0 - 160 + parseInt(160 * (endPosRatio - 0.33) / 0.33);
-            bottomTip.style.bottom = move + 'px';
-            bottomTip.style.right = move + 'px';
-            dragBall.style.opacity = (endPosRatio - 0.33) / 0.33;
-        } else if (endPosRatio > 0 && endPosRatio <= 0.33 ) {
-            bottomTip.style.bottom = '-160px';
-            bottomTip.style.right = '-160px';
-            dragBall.style.opacity = 0;
-        }
-
-        preEndX = tempX;
-        preEndY = tempY;
-    });
-
-    newPage.addEventListener('touchend', function (e) {
-        let showBall = false;
-        // 隐藏tip
-        let bottomTip = document.querySelector('.right-bottom-tip');
-        let dragBall = document.querySelector('.dragable-ball');
-        bottomTip.style.bottom = '-160px';
-        bottomTip.style.right = '-160px';
-
-        touchEndX = e.changedTouches[0].clientX;
-        touchEndY = e.changedTouches[0].clientY;
-
-        let diffx = touchEndX - touchStartX;
-
-        // 若松手的位置在引导tip框内，显示浮窗 否则隐藏
-        if (touchEndX < (clientWidth - 160) || touchEndY < (clientHeight - 160)) {
-            dragBall.style.opacity = 0;
-        } else {
-            dragBall.style.opacity = 1;
-            showBall = true;
-        }
-
-        if (diffx > 10) {
-            // 横向滑动距离超过10 说明表示要离开页面
-            let endPosRatio = touchEndX / clientWidth;
-            if (endPosRatio > 0.33) {
-                // 超过1/3屏幕 将新页面缩成一个球
-                if (showBall) {
-                    newPage.style.left = '0vw';
-                    newPage.style.clipPath = `circle(0px at ${clientWidth - 8 - 15 - 4}px 30vh)`;
-                } else {
-                    newPage.style.left = '100vw';
-                }
-            } else {
-                // 弹回当前页面
-                newPage.style.left = '0vw';
-            }
-        }
-    });
-}
-
-function backToNewPage() {
-    let clientWidth = window.screen.availWidth;
-    let dragBall = document.querySelector('.dragable-ball');
-    let newPage = document.querySelector('.new-page');
-    dragBall.addEventListener('click', function () {
-        newPage.style.clipPath = `circle(100vh at ${clientWidth - 8 - 15 - 4}px 30vh)`;
-        dragBall.style.opacity = 0;
-    });
-}
-window.onload = function () {
     showNewPage();
     slideNewPage();
     backToNewPage();
+    function showNewPage() {
+        goNewPageButton.addEventListener('click', function () {
+            newPage.style.top = '0vh';
+            newPage.style.left = '0vh';
+        });
+    }
+
+    function slideNewPage() {
+        let touchStartX = touchStartY = touchEndX = touchEndY = preEndX = preEndY = 0;
+
+        newPage.addEventListener('touchstart', function (e) {
+            touchStartX = preEndX = e.touches[0].clientX;
+            touchStartY = preEndY = e.touches[0].clientY;
+        });
+
+        newPage.addEventListener('touchmove', function (e) {
+            let tempX = tempY = 0;
+            tempX = e.changedTouches[0].clientX;
+            tempY = e.changedTouches[0].clientY;
+
+            let diffx = tempX - preEndX;
+
+            // 随着拖动移动页面
+            let preLeft = parseInt(newPage.style.left);
+            if (Math.abs(diffx) > 10) {
+                let movex = preLeft + Number(diffx);
+                if (movex < 0) {
+                    newPage.style.left = '0px';
+                } else {
+                    newPage.style.left = `${preLeft + Number(diffx)}px`;
+                }
+            }
+
+            // 拖动超过1/3屏幕，显示浮窗引导 控制浮窗透明度
+            let endPosRatio = preLeft / clientWidth;
+
+            if (endPosRatio > 0.33 && endPosRatio < 0.66) {
+                let move = 0 - 160 + parseInt(160 * (endPosRatio - 0.33) / 0.33);
+                bottomTip.style.bottom = move + 'px';
+                bottomTip.style.right = move + 'px';
+                dragBall.style.opacity = (endPosRatio - 0.33) / 0.33;
+            } else if (endPosRatio > 0 && endPosRatio <= 0.33) {
+                bottomTip.style.bottom = '-160px';
+                bottomTip.style.right = '-160px';
+                dragBall.style.opacity = 0;
+            }
+
+            preEndX = tempX;
+            preEndY = tempY;
+        });
+
+        newPage.addEventListener('touchend', function (e) {
+            let showBall = false;
+            // 隐藏tip
+            bottomTip.style.bottom = '-160px';
+            bottomTip.style.right = '-160px';
+
+            touchEndX = e.changedTouches[0].clientX;
+            touchEndY = e.changedTouches[0].clientY;
+
+            let diffx = touchEndX - touchStartX;
+
+            // 若松手的位置在引导tip框内，显示浮窗 否则隐藏
+            if (touchEndX < (clientWidth - 160) || touchEndY < (clientHeight - 160)) {
+                dragBall.style.opacity = 0;
+            } else {
+                dragBall.style.opacity = 1;
+                showBall = true;
+            }
+
+            if (diffx > 10) {
+                // 横向滑动距离超过10 说明表示要离开页面
+                let endPosRatio = touchEndX / clientWidth;
+                if (endPosRatio > 0.33) {
+                    // 超过1/3屏幕 将新页面缩成一个球
+                    if (showBall) {
+                        newPage.style.left = '0vw';
+                        newPage.style.clipPath = `circle(0px at ${clientWidth - 8 - 15 - 4}px 30vh)`;
+                    } else {
+                        newPage.style.left = '100vw';
+                    }
+                } else {
+                    // 弹回当前页面
+                    newPage.style.left = '0vw';
+                }
+            }
+        });
+    }
+
+    function backToNewPage() {
+        dragBall.addEventListener('click', function () {
+            newPage.style.clipPath = `circle(100vh at ${clientWidth - 8 - 15 - 4}px 30vh)`;
+            dragBall.style.opacity = 0;
+        });
+    }
 };
 </script>
 </html>
