@@ -132,6 +132,7 @@ function slideNewPage() {
     });
 
     newPage.addEventListener('touchend', function (e) {
+        let showBall = false;
         // 隐藏tip
         let bottomTip = document.querySelector('.right-bottom-tip');
         let dragBall = document.querySelector('.dragable-ball');
@@ -141,19 +142,27 @@ function slideNewPage() {
         touchEndX = e.changedTouches[0].clientX;
         touchEndY = e.changedTouches[0].clientY;
 
+        let diffx = touchEndX - touchStartX;
+
         // 若松手的位置在引导tip框内，显示浮窗 否则隐藏
         if (touchEndX < (clientWidth - 160) || touchEndY < (clientHeight - 160)) {
             dragBall.style.opacity = 0;
+        } else {
+            dragBall.style.opacity = 1;
+            showBall = true;
         }
-
-        let diffx = touchEndX - touchStartX;
 
         if (diffx > 10) {
             // 横向滑动距离超过10 说明表示要离开页面
             let endPosRatio = touchEndX / clientWidth;
             if (endPosRatio > 0.33) {
-                // 超过1/3屏幕 离开新页面
-                newPage.style.left = '100vw';
+                // 超过1/3屏幕 将新页面缩成一个球
+                if (showBall) {
+                    newPage.style.left = '0vw';
+                    newPage.style.clipPath = `circle(0px at ${clientWidth - 8 - 15 - 4}px 30vh)`;
+                } else {
+                    newPage.style.left = '100vw';
+                }
             } else {
                 // 弹回当前页面
                 newPage.style.left = '0vw';
@@ -161,9 +170,20 @@ function slideNewPage() {
         }
     });
 }
+
+function backToNewPage() {
+    let clientWidth = window.screen.availWidth;
+    let dragBall = document.querySelector('.dragable-ball');
+    let newPage = document.querySelector('.new-page');
+    dragBall.addEventListener('click', function () {
+        newPage.style.clipPath = `circle(100vh at ${clientWidth - 8 - 15 - 4}px 30vh)`;
+        dragBall.style.opacity = 0;
+    });
+}
 window.onload = function () {
     showNewPage();
     slideNewPage();
+    backToNewPage();
 };
 </script>
 </html>
