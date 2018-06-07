@@ -163,7 +163,7 @@ window.onload = function () {
                     // 超过1/3屏幕 将新页面缩成一个球
                     if (showBall) {
                         newPage.style.left = '0vw';
-                        newPage.style.clipPath = `circle(0px at ${clientWidth - 8 - 15 - 4}px 30vh)`;
+                        newPage.style.clipPath = `circle(0px at ${clientWidth - 8 - 15 - 4}px ${clientHeight * 0.3 + 15}px)`;
                     } else {
                         newPage.style.left = '100vw';
                     }
@@ -177,7 +177,7 @@ window.onload = function () {
 
     function backToNewPage() {
         dragBall.addEventListener('click', function () {
-            newPage.style.clipPath = `circle(100vh at ${clientWidth - 8 - 15 - 4}px 30vh)`;
+            newPage.style.clipPath = `circle(100vh at ${clientWidth - 8 - 15 - 4}px ${clientHeight * 0.3 + 15}px)`;
             dragBall.style.opacity = 0;
         });
     }
