@@ -31,7 +31,7 @@
     }
     .dragable-ball {
         position: absolute;
-        right: 8px;
+        left: calc(100% - 46px);
         top: 30vh;
         background: #a4ef97;
         border: 4px solid darkgrey;
@@ -82,10 +82,11 @@ window.onload = function () {
     let dragBall = document.querySelector('.dragable-ball');
     let clientWidth = window.screen.availWidth;
     let clientHeight = window.screen.availHeight;
-
+ 
     showNewPage();
     slideNewPage();
     backToNewPage();
+    moveBall();
     function showNewPage() {
         goNewPageButton.addEventListener('click', function () {
             newPage.style.top = '0vh';
@@ -138,7 +139,7 @@ window.onload = function () {
         });
 
         newPage.addEventListener('touchend', function (e) {
-            let showBall = false;
+            let showBall = false; // 当前浮球是否显示
             // 隐藏tip
             bottomTip.style.bottom = '-160px';
             bottomTip.style.right = '-160px';
@@ -162,8 +163,11 @@ window.onload = function () {
                 if (endPosRatio > 0.33) {
                     // 超过1/3屏幕 将新页面缩成一个球
                     if (showBall) {
+                        let dragBallLeft = dragBall.style.left === '' ? 'calc(100% - 46px)' : `${parseInt(dragBall.style.left) + 19}px`;
+                        let dragBallTop = dragBall.style.top === '' ? '30vh' : `${parseInt(dragBall.style.top) + 19}px`;
+
                         newPage.style.left = '0vw';
-                        newPage.style.clipPath = `circle(0px at ${clientWidth - 8 - 15 - 4}px ${clientHeight * 0.3 + 15}px)`;
+                        newPage.style.clipPath = `circle(0px at ${dragBallLeft} ${dragBallTop})`;
                     } else {
                         newPage.style.left = '100vw';
                     }
@@ -177,8 +181,70 @@ window.onload = function () {
 
     function backToNewPage() {
         dragBall.addEventListener('click', function () {
-            newPage.style.clipPath = `circle(100vh at ${clientWidth - 8 - 15 - 4}px ${clientHeight * 0.3 + 15}px)`;
+            let dragBallLeft = dragBall.style.left === '' ? 'calc(100% - 46px)' : `${parseInt(dragBall.style.left) + 19}px`;
+            let dragBallTop = dragBall.style.top === '' ? '30vh' : `${parseInt(dragBall.style.top) + 19}px`;
+            newPage.style.clipPath = `circle(100vh at ${dragBallLeft} ${dragBallTop})`;
             dragBall.style.opacity = 0;
+        });
+    }
+
+    // 超过一半往右定位 否则定位在左边；横向移动距离超过20 显示消除tip;
+    function moveBall() {
+        let touchStartX = touchStartY = touchEndX = touchEndY = preEndX = preEndY = 0;
+        dragBall.addEventListener('touchstart', function (e) {
+            touchStartX = preEndX = e.touches[0].clientX;
+            touchStartY = preEndY = e.touches[0].clientY;
+        });
+
+        dragBall.addEventListener('touchmove', function (e) {
+            let tempX = tempY = 0;
+            tempX = e.changedTouches[0].clientX;
+            tempY = e.changedTouches[0].clientY;
+
+            let diffx = preEndX - tempX;
+
+            // 随着拖动移动ball
+            dragBall.style.left = tempX + 'px';
+            dragBall.style.top = tempY + 'px';
+            if (Math.abs(diffx) > 10) {
+                bottomTip.style.bottom = '0px';
+                bottomTip.style.right = '0px';
+                bottomTip.style.backgroundColor = '#ef6e65';
+            }
+
+            preEndX = tempX;
+            preEndY = tempY;
+        });
+
+        dragBall.addEventListener('touchend', function (e) {
+            touchEndX = e.changedTouches[0].clientX;
+            touchEndY = e.changedTouches[0].clientY;
+
+            bottomTip.style.bottom = '-160px';
+            bottomTip.style.right = '-160px';
+            bottomTip.style.backgroundColor = 'aquamarine';
+
+            // 若松手的位置在引导tip框内，消除浮球
+            if (touchEndX < (clientWidth - 160) || touchEndY < (clientHeight - 160)) {
+                dragBall.style.opacity = 1;
+                // 在左半边 则靠左半边；在右半边 则靠右半边；
+                if (touchEndX < clientWidth / 2) {
+                    dragBall.style.left = '8px';
+                } else {
+                    dragBall.style.left = `${clientWidth - 8 - 38}px`;
+                }
+                dragBall.style.top = touchEndY + 'px';
+
+                let dragBallLeft = dragBall.style.left === '' ? 'calc(100% - 46px)' : `${parseInt(dragBall.style.left) + 19}px`;
+                let dragBallTop = dragBall.style.top === '' ? '30vh' : `${parseInt(dragBall.style.top) + 19}px`;
+                newPage.style.clipPath = `circle(0 at ${dragBallLeft} ${dragBallTop})`;
+            } else {
+                dragBall.style.opacity = 0;
+                dragBall.style.top = '30vh';
+                dragBall.style.left = `${clientWidth - 8 - 38}px`;
+                newPage.style.left = '100vh';
+                newPage.style.clipPath = `circle(100vh at ${clientWidth - 8 - 15 - 4}px ${clientHeight * 0.3 + 15}px)`;
+            }
         });
     }
 };
