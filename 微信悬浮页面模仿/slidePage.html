@@ -55,8 +55,6 @@
     </style>
 </head>
 <body>
-    <!-- 移动到三分之一处  底部出现浮窗引导 若手指移动到浮窗引导内部 显示浮窗 否则不显示 -->
-    <!-- 现实浮窗后 浮窗可拖动 拖动到底部消除浮窗 -->
     <div class="main-page">
         <div class="content">
             <h1>here is main page.</h1>
@@ -87,6 +85,7 @@ window.onload = function () {
     slideNewPage();
     backToNewPage();
     moveBall();
+
     function showNewPage() {
         goNewPageButton.addEventListener('click', function () {
             newPage.style.top = '0vh';
@@ -149,7 +148,7 @@ window.onload = function () {
 
             let diffx = touchEndX - touchStartX;
 
-            // 若松手的位置在引导tip框内，显示浮窗 否则隐藏
+            // 若松手的位置在引导tip框内，显示浮球 否则隐藏 TODO 边界条件待优化
             if (touchEndX < (clientWidth - 160) || touchEndY < (clientHeight - 160)) {
                 dragBall.style.opacity = 0;
             } else {
@@ -164,7 +163,10 @@ window.onload = function () {
                     // 超过1/3屏幕 将新页面缩成一个球
                     if (showBall) {
                         let dragBallLeft = dragBall.style.left === '' ? 'calc(100% - 46px)' : `${parseInt(dragBall.style.left) + 19}px`;
-                        let dragBallTop = dragBall.style.top === '' ? '30vh' : `${parseInt(dragBall.style.top) + 19}px`;
+                        let dragBallTop = dragBall.style.top === '' ? '30vh' : `${dragBall.style.top.slice(-2).toLowerCase() === 'vh' ? parseInt(dragBall.style.top) * clientHeight / 100 + 19 : parseInt(dragBall.style.top) + 19}px`;
+
+                        console.log(dragBallLeft);
+                        console.log(dragBallTop);
 
                         newPage.style.left = '0vw';
                         newPage.style.clipPath = `circle(0px at ${dragBallLeft} ${dragBallTop})`;
